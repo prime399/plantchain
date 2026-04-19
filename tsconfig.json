@@ -1,0 +1,3 @@
+{
+  "extends": "@plantchain-new/config/tsconfig.base.json"
+}
