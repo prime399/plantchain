@@ -14,11 +14,11 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
   head: () => ({
     meta: [
       {
-        title: "plantchain-new",
+        title: "PlantChain",
       },
       {
         name: "description",
-        content: "plantchain-new is a web application",
+        content: "Community tree planting registry — log, verify, and record your impact on-chain.",
       },
     ],
     links: [
