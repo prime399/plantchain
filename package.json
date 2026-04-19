@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "@plantchain-new/config": "workspace:*",
+    "@types/node": "^25.6.0",
     "turbo": "^2.8.12",
     "typescript": "catalog:"
   },
