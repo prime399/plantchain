@@ -7,10 +7,51 @@ import { v } from "convex/values";
 import { internal } from "./_generated/api";
 import { internalAction } from "./_generated/server";
 
+interface Auth0TokenResponse {
+  access_token: string;
+  token_type: string;
+  expires_in: number;
+}
+
+async function acquireAgentToken(): Promise<{
+  agentId: string;
+  token: string | null;
+}> {
+  const domain = process.env.AUTH0_DOMAIN;
+  const clientId = process.env.AUTH0_CLIENT_ID;
+  const clientSecret = process.env.AUTH0_CLIENT_SECRET;
+  const audience = process.env.AUTH0_AUDIENCE;
+
+  if (!domain || !clientId || !clientSecret || !audience) {
+    return { agentId: "local-dev-agent", token: null };
+  }
+
+  const res = await fetch(`https://${domain}/oauth/token`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      grant_type: "client_credentials",
+      client_id: clientId,
+      client_secret: clientSecret,
+      audience,
+    }),
+  });
+
+  if (!res.ok) {
+    console.error(
+      `Auth0 M2M token request failed: ${res.status} ${res.statusText}`,
+    );
+    return { agentId: clientId, token: null };
+  }
+
+  const data = (await res.json()) as Auth0TokenResponse;
+  return { agentId: clientId, token: data.access_token };
+}
+
 export const verify = internalAction({
   args: { plantingId: v.id("plantings") },
   handler: async (ctx, { plantingId }) => {
-    const agentId = process.env.AUTH0_AGENT_CLIENT_ID ?? "local-dev-agent";
+    const { agentId } = await acquireAgentToken();
 
     const planting = await ctx.runQuery(internal.plantings.getInternal, { plantingId });
     if (!planting) return;

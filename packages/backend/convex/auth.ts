@@ -12,8 +12,10 @@ const siteUrl = process.env.SITE_URL!;
 export const authComponent = createClient<DataModel>(components.betterAuth);
 
 function createAuth(ctx: GenericCtx<DataModel>) {
+  const convexSiteUrl = process.env.BETTER_AUTH_URL!;
   return betterAuth({
-    trustedOrigins: [siteUrl],
+    baseURL: convexSiteUrl,
+    trustedOrigins: [siteUrl, convexSiteUrl],
     database: authComponent.adapter(ctx),
     emailAndPassword: {
       enabled: true,
