@@ -3,6 +3,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "convex/react";
 import { CheckCircle2, Clock, MapPin, TreePine, XCircle } from "lucide-react";
 
+import { Sapling } from "@/components/svg/tree-illustrations";
+
 export const Route = createFileRoute("/feed")({
   component: FeedRoute,
 });
@@ -69,9 +71,9 @@ function FeedRoute() {
                     className="w-full h-44 object-cover"
                   />
                 ) : (
-                  <div className="w-full h-44 bg-mist dark:bg-forest-mid flex items-center justify-center text-4xl">
-                    🌳
-                  </div>
+                  <div className="w-full h-44 bg-mist dark:bg-forest-mid flex items-center justify-center">
+                      <Sapling className="w-16 h-20 opacity-50" />
+                    </div>
                 )}
                 <div className="p-4">
                   <div className="flex items-center gap-2 mb-2">

@@ -8,6 +8,7 @@ import { useState } from "react";
 import SignInForm from "@/components/sign-in-form";
 import SignUpForm from "@/components/sign-up-form";
 import UserMenu from "@/components/user-menu";
+import { Sapling } from "@/components/svg/tree-illustrations";
 
 export const Route = createFileRoute("/dashboard")({
   component: RouteComponent,
@@ -120,8 +121,8 @@ function DashboardContent() {
                     className="w-24 h-24 object-cover flex-shrink-0"
                   />
                 ) : (
-                  <div className="w-24 h-24 flex-shrink-0 bg-mist dark:bg-forest-mid flex items-center justify-center text-2xl">
-                    🌳
+                  <div className="w-24 h-24 flex-shrink-0 bg-mist dark:bg-forest-mid flex items-center justify-center">
+                    <Sapling className="w-10 h-14 opacity-50" />
                   </div>
                 )}
                 <div className="p-4 flex flex-col justify-between flex-1 min-w-0">
