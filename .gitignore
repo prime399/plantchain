@@ -50,8 +50,8 @@ coverage
 tmp
 temp
 
-# Convex generated
-packages/backend/convex/_generated/
+# Convex generated (committed for Vercel builds)
+# packages/backend/convex/_generated/
 
 # Claude/agent tooling
 .claude/
