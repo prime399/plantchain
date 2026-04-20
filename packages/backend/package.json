@@ -6,7 +6,8 @@
   "author": "",
   "scripts": {
     "dev": "convex dev",
-    "dev:setup": "convex dev --configure --until-success"
+    "dev:setup": "convex dev --configure --until-success",
+    "build": "convex codegen"
   },
   "dependencies": {
     "@ai-sdk/google": "^2.0.52",
