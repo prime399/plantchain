@@ -19,6 +19,13 @@ function createAuth(ctx: GenericCtx<DataModel>) {
       enabled: true,
       requireEmailVerification: false,
     },
+    socialProviders: {
+      google: {
+        clientId: process.env.GOOGLE_CLIENT_ID as string,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+        prompt: "select_account",
+      },
+    },
     plugins: [
       crossDomain({ siteUrl }),
       convex({
