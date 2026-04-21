@@ -60,3 +60,8 @@ packages/backend/.agents/
 skills-lock.json
 packages/backend/skills-lock.json
 .vercel
+
+#articles
+articles
+
+design-examples

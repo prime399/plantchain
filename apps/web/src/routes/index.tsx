@@ -11,6 +11,7 @@ import {
   Users,
 } from "lucide-react";
 
+import { GameOfLifeCanvas } from "@/components/game-of-life";
 import {
   HeroTree,
   IconCamera,
@@ -116,7 +117,8 @@ function HomeComponent() {
     <div className="overflow-y-auto">
       {/* Hero */}
       <section className="relative bg-forest overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,rgba(93,165,82,0.08)_0%,transparent_50%),radial-gradient(circle_at_80%_20%,rgba(200,148,58,0.06)_0%,transparent_50%)]" />
+        <GameOfLifeCanvas />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,rgba(93,165,82,0.08)_0%,transparent_50%),radial-gradient(circle_at_80%_20%,rgba(200,148,58,0.06)_0%,transparent_50%)] pointer-events-none" />
         <HeroTree className="absolute -left-8 bottom-0 h-72 sm:h-96 opacity-15 pointer-events-none" />
         <HeroTree className="absolute -right-8 bottom-0 h-64 sm:h-80 opacity-10 pointer-events-none scale-x-[-1]" />
         <LeafCluster className="absolute top-8 left-1/4 w-32 opacity-10 pointer-events-none" />
@@ -328,6 +330,7 @@ function HomeComponent() {
 
       {/* CTA Footer */}
       <section className="relative bg-forest overflow-hidden">
+        <GameOfLifeCanvas />
         <TreeLine className="absolute bottom-0 left-0 w-full h-24 opacity-30 pointer-events-none" />
         <div className="relative max-w-3xl mx-auto px-4 py-16 sm:py-20 text-center">
           <Sapling className="w-12 h-16 mx-auto mb-4 opacity-60" />
