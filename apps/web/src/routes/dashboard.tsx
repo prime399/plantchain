@@ -11,10 +11,13 @@ import {
   ArrowUpRight,
   CheckCircle2,
   Clock,
+  ExternalLink,
+  Fingerprint,
   Globe,
   Leaf,
   Loader2,
   MapPin,
+  ShieldCheck,
   Sparkles,
   TrendingUp,
   XCircle,
@@ -524,18 +527,33 @@ function DashboardContent() {
                           day: "numeric",
                         })}
                       </span>
-                      {p.solanaTxSignature && (
-                        <a
-                          href={`https://explorer.solana.com/tx/${p.solanaTxSignature}?cluster=devnet`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-1 text-amber-600 dark:text-amber-400 hover:underline"
-                        >
-                          <ArrowUpRight className="h-3 w-3" />
-                          On-chain
-                        </a>
-                      )}
                     </div>
+                    {p.status === "verified" && p.verificationResult && (
+                      <div className="space-y-1.5 mt-2">
+                        <div className="flex items-center gap-1.5 text-[0.6rem]">
+                          <Fingerprint className="h-3 w-3 text-violet-500 shrink-0" />
+                          <span className="text-violet-600 dark:text-violet-400 font-medium">Auth0</span>
+                          <span className="text-muted-foreground font-mono truncate">
+                            {p.verificationResult.agentId}
+                          </span>
+                        </div>
+                        {p.solanaTxSignature && (
+                          <a
+                            href={`https://explorer.solana.com/tx/${p.solanaTxSignature}?cluster=devnet`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-1.5 text-[0.6rem] hover:underline"
+                          >
+                            <ShieldCheck className="h-3 w-3 text-amber-500 shrink-0" />
+                            <span className="text-amber-600 dark:text-amber-400 font-medium">Solana</span>
+                            <span className="text-muted-foreground font-mono truncate">
+                              {p.solanaTxSignature.slice(0, 12)}...{p.solanaTxSignature.slice(-6)}
+                            </span>
+                            <ExternalLink className="h-2.5 w-2.5 text-muted-foreground shrink-0" />
+                          </a>
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

@@ -1,7 +1,7 @@
 import { api } from "@plantchain-new/backend/convex/_generated/api";
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "convex/react";
-import { CheckCircle2, Clock, Crown, ExternalLink, MapPin, Medal, ShieldCheck, TreePine, Trophy, XCircle } from "lucide-react";
+import { CheckCircle2, Clock, Crown, ExternalLink, Fingerprint, MapPin, Medal, ShieldCheck, TreePine, Trophy, XCircle } from "lucide-react";
 
 import { Sapling } from "@/components/svg/tree-illustrations";
 
@@ -98,6 +98,64 @@ function Leaderboard() {
   );
 }
 
+function TrustProof() {
+  const chainStats = useQuery(api.plantings.chainStats);
+
+  return (
+    <div className="rounded-xl border bg-card p-5 space-y-4">
+      <div>
+        <div className="flex items-center gap-2">
+          <ShieldCheck className="h-5 w-5 text-amber-500" />
+          <h2 className="font-serif text-lg font-semibold">Trust Proof</h2>
+        </div>
+        <p className="text-xs text-muted-foreground mt-1 ml-7">
+          Verification and on-chain stats
+        </p>
+      </div>
+
+      <div className="space-y-3">
+        <div className="flex items-center gap-3 p-3 rounded-lg bg-violet-500/5 border border-violet-500/20">
+          <Fingerprint className="h-4 w-4 text-violet-600 dark:text-violet-400 shrink-0" />
+          <div className="min-w-0 flex-1">
+            <div className="text-xs font-medium">Auth0 M2M Agent</div>
+            <div className="text-[0.65rem] text-muted-foreground">
+              {chainStats?.totalVerified ?? "—"} verifications logged
+            </div>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3 p-3 rounded-lg bg-amber-500/5 border border-amber-500/20">
+          <ShieldCheck className="h-4 w-4 text-amber-600 dark:text-amber-400 shrink-0" />
+          <div className="min-w-0 flex-1">
+            <div className="text-xs font-medium">Solana Devnet</div>
+            <div className="text-[0.65rem] text-muted-foreground">
+              {chainStats?.onChainCount ?? "—"} on-chain records
+            </div>
+          </div>
+        </div>
+
+        {chainStats?.recentTxs[0] && (
+          <a
+            href={`https://explorer.solana.com/tx/${chainStats.recentTxs[0].signature}?cluster=devnet`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex items-center gap-2 p-2 rounded-lg hover:bg-muted/30 transition-colors"
+          >
+            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+            <div className="min-w-0 flex-1">
+              <div className="text-[0.65rem] text-muted-foreground">Latest tx</div>
+              <div className="font-mono text-[0.6rem] text-muted-foreground truncate">
+                {chainStats.recentTxs[0].signature.slice(0, 12)}...{chainStats.recentTxs[0].signature.slice(-6)}
+              </div>
+            </div>
+            <ExternalLink className="h-3 w-3 text-muted-foreground group-hover:text-amber-500 transition-colors shrink-0" />
+          </a>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function FeedRoute() {
   const plantings = useQuery(api.plantings.list, {});
 
@@ -179,25 +237,39 @@ function FeedRoute() {
                         </p>
                       )}
 
-                      {p.solanaTxSignature && (
-                        <div className="mt-3 pt-3 border-t border-border">
-                          <a
-                            href={`https://explorer.solana.com/tx/${p.solanaTxSignature}?cluster=devnet`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="group/proof flex items-center gap-2 p-2 rounded-lg bg-amber-500/5 border border-amber-500/20 hover:border-amber-500/40 hover:bg-amber-500/10 transition-all"
-                          >
-                            <ShieldCheck className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
+                      {p.status === "verified" && p.verificationResult && (
+                        <div className="mt-3 pt-3 border-t border-border space-y-2">
+                          <div className="flex items-center gap-2 p-2 rounded-lg bg-violet-500/5 border border-violet-500/20">
+                            <Fingerprint className="h-3.5 w-3.5 text-violet-600 dark:text-violet-400 shrink-0" />
                             <div className="min-w-0 flex-1">
-                              <div className="text-[0.6rem] font-medium text-amber-700 dark:text-amber-300">
-                                On-Chain Proof
+                              <div className="text-[0.6rem] font-medium text-violet-700 dark:text-violet-300">
+                                Auth0 Agent Verified
                               </div>
                               <div className="font-mono text-[0.6rem] text-muted-foreground truncate">
-                                {p.solanaTxSignature.slice(0, 16)}...{p.solanaTxSignature.slice(-8)}
+                                {p.verificationResult.agentId} · {new Date(p.verificationResult.verifiedAt).toLocaleString()}
                               </div>
                             </div>
-                            <ExternalLink className="h-3 w-3 text-muted-foreground group-hover/proof:text-amber-500 transition-colors shrink-0" />
-                          </a>
+                          </div>
+
+                          {p.solanaTxSignature && (
+                            <a
+                              href={`https://explorer.solana.com/tx/${p.solanaTxSignature}?cluster=devnet`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="group/proof flex items-center gap-2 p-2 rounded-lg bg-amber-500/5 border border-amber-500/20 hover:border-amber-500/40 hover:bg-amber-500/10 transition-all"
+                            >
+                              <ShieldCheck className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
+                              <div className="min-w-0 flex-1">
+                                <div className="text-[0.6rem] font-medium text-amber-700 dark:text-amber-300">
+                                  Solana On-Chain Proof
+                                </div>
+                                <div className="font-mono text-[0.6rem] text-muted-foreground truncate">
+                                  {p.solanaTxSignature.slice(0, 16)}...{p.solanaTxSignature.slice(-8)}
+                                </div>
+                              </div>
+                              <ExternalLink className="h-3 w-3 text-muted-foreground group-hover/proof:text-amber-500 transition-colors shrink-0" />
+                            </a>
+                          )}
                         </div>
                       )}
                     </div>
@@ -207,8 +279,9 @@ function FeedRoute() {
             )}
           </div>
 
-          <div className="lg:sticky lg:top-4 lg:self-start">
+          <div className="lg:sticky lg:top-4 lg:self-start space-y-4">
             <Leaderboard />
+            <TrustProof />
           </div>
         </div>
       </div>
