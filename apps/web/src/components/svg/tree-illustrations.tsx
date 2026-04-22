@@ -147,3 +147,96 @@ export function IconRecord({ className }: { className?: string }) {
     </svg>
   );
 }
+
+export function PineTree({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 60 80" fill="none" className={className}>
+      <rect x="27" y="55" width="6" height="20" rx="2" fill="#6b4f3a" />
+      <polygon points="30,8 10,40 50,40" fill="#2d5a3d" />
+      <polygon points="30,18 14,48 46,48" fill="#3d7a52" />
+      <polygon points="30,28 18,55 42,55" fill="#5c9e6e" opacity="0.8" />
+      <circle cx="25" cy="30" r="2" fill="#8fc99e" opacity="0.5" />
+      <circle cx="35" cy="38" r="1.5" fill="#d4ead9" opacity="0.4" />
+    </svg>
+  );
+}
+
+export function PalmTree({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 60 80" fill="none" className={className}>
+      <path d="M28 35 Q26 55 27 75" stroke="#6b4f3a" strokeWidth="5" strokeLinecap="round" fill="none" />
+      <path d="M28 35 Q10 20 2 28" stroke="#3d7a52" strokeWidth="3" strokeLinecap="round" fill="none" />
+      <path d="M28 35 Q12 30 5 38" stroke="#5c9e6e" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+      <path d="M28 35 Q45 18 55 24" stroke="#3d7a52" strokeWidth="3" strokeLinecap="round" fill="none" />
+      <path d="M28 35 Q48 28 56 36" stroke="#5c9e6e" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+      <path d="M28 35 Q22 12 18 5" stroke="#2d5a3d" strokeWidth="3" strokeLinecap="round" fill="none" />
+      <path d="M28 35 Q35 10 40 4" stroke="#3d7a52" strokeWidth="3" strokeLinecap="round" fill="none" />
+      <ellipse cx="28" cy="34" rx="4" ry="3" fill="#5c9e6e" />
+    </svg>
+  );
+}
+
+export function BaobabTree({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 60 80" fill="none" className={className}>
+      <path d="M22 40 Q20 55 18 75 L42 75 Q40 55 38 40Z" fill="#6b4f3a" />
+      <path d="M25 42 Q24 55 23 70" stroke="#5a3f2a" strokeWidth="1" opacity="0.4" fill="none" />
+      <path d="M35 42 Q36 55 37 70" stroke="#5a3f2a" strokeWidth="1" opacity="0.4" fill="none" />
+      <ellipse cx="30" cy="28" rx="26" ry="22" fill="#2d5a3d" />
+      <ellipse cx="22" cy="22" rx="16" ry="14" fill="#3d7a52" />
+      <ellipse cx="38" cy="24" rx="14" ry="13" fill="#3d7a52" opacity="0.9" />
+      <ellipse cx="30" cy="18" rx="10" ry="10" fill="#5c9e6e" opacity="0.7" />
+      <circle cx="20" cy="18" r="2" fill="#8fc99e" opacity="0.5" />
+      <circle cx="38" cy="16" r="1.5" fill="#d4ead9" opacity="0.4" />
+    </svg>
+  );
+}
+
+export function WillowTree({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 60 80" fill="none" className={className}>
+      <rect x="27" y="35" width="6" height="40" rx="2" fill="#6b4f3a" />
+      <ellipse cx="30" cy="28" rx="22" ry="20" fill="#2d5a3d" opacity="0.6" />
+      <path d="M15 25 Q10 45 8 60" stroke="#3d7a52" strokeWidth="2" strokeLinecap="round" fill="none" opacity="0.7" />
+      <path d="M20 22 Q14 42 12 58" stroke="#5c9e6e" strokeWidth="1.5" strokeLinecap="round" fill="none" opacity="0.6" />
+      <path d="M25 20 Q20 40 18 55" stroke="#3d7a52" strokeWidth="2" strokeLinecap="round" fill="none" opacity="0.7" />
+      <path d="M35 20 Q40 40 42 55" stroke="#3d7a52" strokeWidth="2" strokeLinecap="round" fill="none" opacity="0.7" />
+      <path d="M40 22 Q46 42 48 58" stroke="#5c9e6e" strokeWidth="1.5" strokeLinecap="round" fill="none" opacity="0.6" />
+      <path d="M45 25 Q50 45 52 60" stroke="#3d7a52" strokeWidth="2" strokeLinecap="round" fill="none" opacity="0.7" />
+      <ellipse cx="30" cy="22" rx="14" ry="12" fill="#5c9e6e" opacity="0.5" />
+    </svg>
+  );
+}
+
+export function OakTree({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 60 80" fill="none" className={className}>
+      <rect x="26" y="48" width="8" height="27" rx="3" fill="#6b4f3a" />
+      <path d="M30 50 Q18 48 14 60" stroke="#6b4f3a" strokeWidth="3" strokeLinecap="round" fill="none" opacity="0.6" />
+      <path d="M30 50 Q42 48 46 60" stroke="#6b4f3a" strokeWidth="3" strokeLinecap="round" fill="none" opacity="0.6" />
+      <ellipse cx="30" cy="30" rx="25" ry="24" fill="#2d5a3d" />
+      <ellipse cx="20" cy="25" rx="15" ry="16" fill="#3d7a52" />
+      <ellipse cx="40" cy="27" rx="14" ry="15" fill="#3d7a52" opacity="0.9" />
+      <ellipse cx="30" cy="20" rx="12" ry="13" fill="#5c9e6e" opacity="0.7" />
+      <ellipse cx="22" cy="16" rx="8" ry="8" fill="#8fc99e" opacity="0.4" />
+      <ellipse cx="38" cy="18" rx="7" ry="7" fill="#8fc99e" opacity="0.3" />
+      <circle cx="16" cy="22" r="2" fill="#d4ead9" opacity="0.4" />
+      <circle cx="42" cy="20" r="1.5" fill="#d4ead9" opacity="0.3" />
+    </svg>
+  );
+}
+
+export function RedwoodTree({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 60 80" fill="none" className={className}>
+      <rect x="25" y="30" width="10" height="45" rx="3" fill="#5a3f2a" />
+      <rect x="27" y="35" width="6" height="40" rx="2" fill="#6b4f3a" />
+      <polygon points="30,4 16,28 44,28" fill="#2d5a3d" />
+      <polygon points="30,12 18,34 42,34" fill="#3d7a52" />
+      <polygon points="30,20 20,40 40,40" fill="#3d7a52" opacity="0.9" />
+      <polygon points="30,28 22,46 38,46" fill="#5c9e6e" opacity="0.7" />
+      <circle cx="26" cy="20" r="1.5" fill="#8fc99e" opacity="0.5" />
+      <circle cx="34" cy="28" r="1" fill="#d4ead9" opacity="0.4" />
+    </svg>
+  );
+}

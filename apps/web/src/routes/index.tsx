@@ -13,14 +13,20 @@ import {
 
 import { GameOfLifeCanvas } from "@/components/game-of-life";
 import {
+  BaobabTree,
   HeroTree,
   IconCamera,
   IconPlant,
   IconRecord,
   IconVerify,
   LeafCluster,
+  OakTree,
+  PalmTree,
+  PineTree,
+  RedwoodTree,
   Sapling,
   TreeLine,
+  WillowTree,
 } from "@/components/svg/tree-illustrations";
 
 export const Route = createFileRoute("/")({
@@ -81,31 +87,37 @@ const FEATURED_SPECIES = [
     name: "Japanese Cherry Blossom",
     region: "East Asia",
     fact: "Can live over 1,000 years. Symbolizes renewal and the beauty of life.",
+    tree: WillowTree,
   },
   {
     name: "Coast Redwood",
     region: "California, USA",
     fact: "Tallest trees on Earth, reaching over 115m. Absorbs massive CO2.",
+    tree: RedwoodTree,
   },
   {
     name: "Baobab",
     region: "Sub-Saharan Africa",
     fact: "Stores up to 120,000 liters of water. Called the Tree of Life.",
+    tree: BaobabTree,
   },
   {
     name: "European Oak",
     region: "Europe",
     fact: "Supports 2,300+ species. A single tree produces 70,000 acorns yearly.",
+    tree: OakTree,
   },
   {
     name: "Neem",
     region: "South Asia",
     fact: "Natural pesticide and air purifier. Used in medicine for centuries.",
+    tree: PalmTree,
   },
   {
     name: "Giant Sequoia",
     region: "Sierra Nevada, USA",
     fact: "Most massive trees by volume. Some are over 3,000 years old.",
+    tree: PineTree,
   },
 ];
 
@@ -183,8 +195,9 @@ function HomeComponent() {
       </section>
 
       {/* How It Works */}
-      <section className="max-w-5xl mx-auto px-4 py-16 sm:py-20">
-        <div className="text-center mb-12">
+      <section className="relative max-w-5xl mx-auto px-4 py-16 sm:py-20">
+        <div className="absolute inset-0 bg-dot-grid text-sprout/[0.07] pointer-events-none" />
+        <div className="relative text-center mb-12">
           <h2 className="font-serif text-3xl font-semibold mb-3">
             How It Works
           </h2>
@@ -192,14 +205,16 @@ function HomeComponent() {
             Four simple steps from planting to permanent record.
           </p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {HOW_IT_WORKS.map((step, i) => (
             <div
               key={step.title}
-              className="group relative rounded-xl border bg-card p-6 text-center hover:shadow-lg hover:-translate-y-1 transition-all"
+              className="corner-card group relative rounded-none border border-border/40 bg-card p-6 text-center hover:shadow-lg hover:shadow-sprout/5 hover:-translate-y-1 transition-all"
               style={{ animationDelay: `${i * 100}ms` }}
             >
-              <div className="absolute -top-3 -right-3 font-mono text-[0.65rem] bg-gold text-forest font-bold w-6 h-6 rounded-full flex items-center justify-center">
+              <span className="corner-bl" />
+              <span className="corner-br" />
+              <div className="absolute top-2 right-2 font-mono text-[0.65rem] bg-gold text-forest font-bold w-6 h-6 rounded-full flex items-center justify-center">
                 {i + 1}
               </div>
               <step.icon className="w-14 h-14 mx-auto mb-4" />
@@ -215,8 +230,9 @@ function HomeComponent() {
       </section>
 
       {/* Recent Verified */}
-      <section className="bg-mist/30 dark:bg-forest/30">
-        <div className="max-w-5xl mx-auto px-4 py-16 sm:py-20">
+      <section className="relative bg-mist/30 dark:bg-forest/30">
+        <div className="absolute inset-0 bg-dot-grid text-sprout/[0.05] pointer-events-none" />
+        <div className="relative max-w-5xl mx-auto px-4 py-16 sm:py-20">
           <div className="flex items-center justify-between mb-8">
             <h2 className="font-serif text-2xl font-semibold">
               Recent Verified Plantings
@@ -235,12 +251,12 @@ function HomeComponent() {
               {[1, 2, 3, 4].map((i) => (
                 <div
                   key={i}
-                  className="rounded-xl border bg-card h-36 animate-pulse"
+                  className="rounded-lg border-l-2 border-l-sprout/40 border border-border/40 bg-card h-36 animate-pulse"
                 />
               ))}
             </div>
           ) : recent.length === 0 ? (
-            <div className="rounded-xl border bg-card p-12 text-center">
+            <div className="rounded-lg border-l-2 border-l-sprout/40 border border-border/40 bg-card p-12 text-center">
               <Sapling className="h-20 w-16 mx-auto mb-3 opacity-40" />
               <p className="text-muted-foreground">
                 No verified plantings yet. Be the first!
@@ -251,16 +267,16 @@ function HomeComponent() {
               {recent.slice(0, 6).map((p) => (
                 <div
                   key={p._id}
-                  className="group rounded-xl border bg-card overflow-hidden flex hover:shadow-lg hover:-translate-y-0.5 transition-all"
+                  className="group rounded-lg border-l-2 border-l-sprout/60 border border-border/40 bg-card overflow-hidden flex hover:border-l-sprout hover:shadow-lg hover:shadow-sprout/5 hover:-translate-y-0.5 transition-all"
                 >
                   {p.photoUrl ? (
                     <img
                       src={p.photoUrl}
                       alt={p.species}
-                      className="w-28 h-full object-cover flex-shrink-0"
+                      className="w-28 h-full object-cover shrink-0"
                     />
                   ) : (
-                    <div className="w-28 flex-shrink-0 bg-mist dark:bg-forest-mid flex items-center justify-center">
+                    <div className="w-28 shrink-0 bg-mist dark:bg-forest-mid flex items-center justify-center">
                       <Sapling className="w-12 h-16 opacity-50" />
                     </div>
                   )}
@@ -270,13 +286,13 @@ function HomeComponent() {
                         <span className="font-serif font-semibold truncate">
                           {p.species}
                         </span>
-                        <span className="inline-flex items-center gap-1 text-[0.65rem] font-mono text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full flex-shrink-0">
+                        <span className="inline-flex items-center gap-1 text-[0.65rem] font-mono text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full shrink-0">
                           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                           Verified
                         </span>
                       </div>
                       <div className="flex items-center gap-1 text-xs text-muted-foreground truncate">
-                        <MapPin className="h-3 w-3 flex-shrink-0" />
+                        <MapPin className="h-3 w-3 shrink-0" />
                         {p.locationName ??
                           `${p.latitude.toFixed(4)}, ${p.longitude.toFixed(4)}`}
                       </div>
@@ -294,8 +310,9 @@ function HomeComponent() {
       </section>
 
       {/* Featured Species */}
-      <section className="max-w-5xl mx-auto px-4 py-16 sm:py-20">
-        <div className="text-center mb-12">
+      <section className="relative max-w-5xl mx-auto px-4 py-16 sm:py-20">
+        <div className="absolute inset-0 bg-dot-grid text-sprout/[0.07] pointer-events-none" />
+        <div className="relative text-center mb-12">
           <h2 className="font-serif text-3xl font-semibold mb-3">
             Featured Species
           </h2>
@@ -303,14 +320,16 @@ function HomeComponent() {
             Trees that make a difference around the world.
           </p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {FEATURED_SPECIES.map((s) => (
             <div
               key={s.name}
-              className="group rounded-xl border bg-card p-5 hover:shadow-lg hover:-translate-y-0.5 transition-all"
+              className="corner-card group relative border border-border/40 bg-card p-5 hover:shadow-lg hover:shadow-sprout/5 hover:-translate-y-0.5 transition-all"
             >
+              <span className="corner-bl" />
+              <span className="corner-br" />
               <div className="flex items-start gap-4">
-                <Sapling className="w-10 h-14 flex-shrink-0 opacity-60 group-hover:opacity-100 transition-opacity" />
+                <s.tree className="w-10 h-14 shrink-0 opacity-60 group-hover:opacity-100 transition-opacity" />
                 <div className="min-w-0">
                   <h3 className="font-serif font-semibold truncate">
                     {s.name}
