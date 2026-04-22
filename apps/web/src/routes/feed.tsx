@@ -1,7 +1,7 @@
 import { api } from "@plantchain-new/backend/convex/_generated/api";
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "convex/react";
-import { CheckCircle2, Clock, MapPin, TreePine, XCircle } from "lucide-react";
+import { CheckCircle2, Clock, Crown, MapPin, Medal, TreePine, Trophy, XCircle } from "lucide-react";
 
 import { Sapling } from "@/components/svg/tree-illustrations";
 
@@ -32,12 +32,78 @@ function StatusBadge({ status }: { status: "pending" | "verified" | "rejected" }
   );
 }
 
+function RankIcon({ rank }: { rank: number }) {
+  if (rank === 1) return <Crown className="h-4 w-4 text-amber-500" />;
+  if (rank === 2) return <Medal className="h-4 w-4 text-slate-400" />;
+  if (rank === 3) return <Trophy className="h-4 w-4 text-amber-700" />;
+  return (
+    <span className="text-xs font-mono text-muted-foreground w-4 text-center">
+      {rank}
+    </span>
+  );
+}
+
+function Leaderboard() {
+  const leaderboard = useQuery(api.plantings.leaderboard);
+
+  return (
+    <div className="rounded-xl border bg-card p-5 space-y-4">
+      <div>
+        <div className="flex items-center gap-2">
+          <Trophy className="h-5 w-5 text-amber-500" />
+          <h2 className="font-serif text-lg font-semibold">Leaderboard</h2>
+        </div>
+        <p className="text-xs text-muted-foreground mt-1 ml-7">
+          Top planters by verified trees
+        </p>
+      </div>
+
+      {leaderboard === undefined ? (
+        <div className="space-y-3">
+          {[1, 2, 3, 4, 5].map((i) => (
+            <div key={i} className="h-10 rounded-lg bg-muted/20 animate-pulse" />
+          ))}
+        </div>
+      ) : leaderboard.length === 0 ? (
+        <p className="text-sm text-muted-foreground text-center py-6">
+          No verified plantings yet
+        </p>
+      ) : (
+        <div className="space-y-1">
+          {leaderboard.map((entry) => (
+            <div
+              key={entry.rank}
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ${
+                entry.rank <= 3
+                  ? "bg-amber-500/5 dark:bg-amber-500/10"
+                  : "hover:bg-muted/30"
+              }`}
+            >
+              <RankIcon rank={entry.rank} />
+              <div className="w-7 h-7 rounded-full bg-mist dark:bg-secondary flex items-center justify-center text-[0.65rem] font-semibold text-forest dark:text-foreground flex-shrink-0">
+                {entry.userName.charAt(0).toUpperCase()}
+              </div>
+              <span className="text-sm font-medium truncate flex-1">
+                {entry.userName}
+              </span>
+              <span className="text-sm font-mono text-muted-foreground flex items-center gap-1">
+                {entry.count}
+                <TreePine className="h-3 w-3 text-leaf" />
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function FeedRoute() {
   const plantings = useQuery(api.plantings.list, {});
 
   return (
     <div className="overflow-y-auto">
-      <div className="max-w-5xl mx-auto px-4 py-10">
+      <div className="max-w-6xl mx-auto px-4 py-10">
         <div className="flex items-center gap-3 mb-2">
           <TreePine className="h-6 w-6 text-leaf" />
           <h1 className="font-serif text-2xl font-semibold">Planting Registry</h1>
@@ -46,75 +112,83 @@ function FeedRoute() {
           All community plantings, verified by AI
         </p>
 
-        {plantings === undefined ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="rounded-xl border bg-card h-72 animate-pulse" />
-            ))}
-          </div>
-        ) : plantings.length === 0 ? (
-          <div className="rounded-xl border bg-card p-16 text-center">
-            <TreePine className="h-12 w-12 text-muted-foreground mx-auto mb-3" />
-            <p className="text-muted-foreground">No plantings yet. Be the first to log one!</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {plantings.map((p) => (
-              <div
-                key={p._id}
-                className="group rounded-xl border bg-card overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all"
-              >
-                {p.photoUrl ? (
-                  <img
-                    src={p.photoUrl}
-                    alt={p.species}
-                    className="w-full h-44 object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-44 bg-mist dark:bg-forest-mid flex items-center justify-center">
-                      <Sapling className="w-16 h-20 opacity-50" />
-                    </div>
-                )}
-                <div className="p-4">
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className="w-7 h-7 rounded-full bg-mist dark:bg-secondary flex items-center justify-center text-[0.65rem] font-semibold text-forest dark:text-foreground flex-shrink-0">
-                      {(p.userName ?? "A").charAt(0).toUpperCase()}
-                    </div>
-                    <span className="text-sm font-medium truncate">
-                      {p.userName ?? "Anonymous"}
-                    </span>
-                    <span className="text-xs text-muted-foreground ml-auto flex-shrink-0">
-                      {new Date(p.createdAt).toLocaleDateString()}
-                    </span>
-                  </div>
-
-                  <h3 className="font-serif font-semibold mb-1">{p.species}</h3>
-                  <div className="flex items-center gap-1 text-xs text-muted-foreground mb-3">
-                    <MapPin className="h-3 w-3 text-leaf flex-shrink-0" />
-                    <span className="truncate">
-                      {p.locationName ?? `${p.latitude.toFixed(4)}, ${p.longitude.toFixed(4)}`}
-                    </span>
-                  </div>
-
-                  <div className="pt-3 border-t border-border flex items-center justify-between">
-                    <StatusBadge status={p.status} />
-                    {p.verificationResult?.reason && (
-                      <span className="text-[0.65rem] text-muted-foreground truncate max-w-[50%] ml-2">
-                        {p.verificationResult.reason}
-                      </span>
-                    )}
-                  </div>
-
-                  {p.verificationResult?.tips && p.status === "verified" && (
-                    <p className="text-xs text-leaf mt-2 line-clamp-1">
-                      💡 {p.verificationResult.tips}
-                    </p>
-                  )}
-                </div>
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-6">
+          <div>
+            {plantings === undefined ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <div key={i} className="rounded-xl border bg-card h-72 animate-pulse" />
+                ))}
               </div>
-            ))}
+            ) : plantings.length === 0 ? (
+              <div className="rounded-xl border bg-card p-16 text-center">
+                <TreePine className="h-12 w-12 text-muted-foreground mx-auto mb-3" />
+                <p className="text-muted-foreground">No plantings yet. Be the first to log one!</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {plantings.map((p) => (
+                  <div
+                    key={p._id}
+                    className="group rounded-xl border bg-card overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all"
+                  >
+                    {p.photoUrl ? (
+                      <img
+                        src={p.photoUrl}
+                        alt={p.species}
+                        className="w-full h-44 object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-44 bg-mist dark:bg-forest-mid flex items-center justify-center">
+                        <Sapling className="w-16 h-20 opacity-50" />
+                      </div>
+                    )}
+                    <div className="p-4">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="w-7 h-7 rounded-full bg-mist dark:bg-secondary flex items-center justify-center text-[0.65rem] font-semibold text-forest dark:text-foreground flex-shrink-0">
+                          {(p.userName ?? "A").charAt(0).toUpperCase()}
+                        </div>
+                        <span className="text-sm font-medium truncate">
+                          {p.userName ?? "Anonymous"}
+                        </span>
+                        <span className="text-xs text-muted-foreground ml-auto flex-shrink-0">
+                          {new Date(p.createdAt).toLocaleDateString()}
+                        </span>
+                      </div>
+
+                      <h3 className="font-serif font-semibold mb-1">{p.species}</h3>
+                      <div className="flex items-center gap-1 text-xs text-muted-foreground mb-3">
+                        <MapPin className="h-3 w-3 text-leaf flex-shrink-0" />
+                        <span className="truncate">
+                          {p.locationName ?? `${p.latitude.toFixed(4)}, ${p.longitude.toFixed(4)}`}
+                        </span>
+                      </div>
+
+                      <div className="pt-3 border-t border-border flex items-center justify-between">
+                        <StatusBadge status={p.status} />
+                        {p.verificationResult?.reason && (
+                          <span className="text-[0.65rem] text-muted-foreground truncate max-w-[50%] ml-2">
+                            {p.verificationResult.reason}
+                          </span>
+                        )}
+                      </div>
+
+                      {p.verificationResult?.tips && p.status === "verified" && (
+                        <p className="text-xs text-leaf mt-2 line-clamp-1">
+                          {p.verificationResult.tips}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
-        )}
+
+          <div className="lg:sticky lg:top-4 lg:self-start">
+            <Leaderboard />
+          </div>
+        </div>
       </div>
     </div>
   );

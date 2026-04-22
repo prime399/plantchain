@@ -101,6 +101,41 @@ export const stats = query({
   },
 });
 
+export const leaderboard = query({
+  args: {},
+  handler: async (ctx) => {
+    const verified = await ctx.db
+      .query("plantings")
+      .withIndex("by_status", (q) => q.eq("status", "verified"))
+      .take(1000);
+
+    const userCounts = new Map<
+      string,
+      { userName: string; count: number }
+    >();
+    for (const p of verified) {
+      const existing = userCounts.get(p.userId);
+      if (existing) {
+        existing.count++;
+      } else {
+        userCounts.set(p.userId, {
+          userName: p.userName ?? "Anonymous",
+          count: 1,
+        });
+      }
+    }
+
+    return Array.from(userCounts.values())
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 20)
+      .map((entry, i) => ({
+        rank: i + 1,
+        userName: entry.userName,
+        count: entry.count,
+      }));
+  },
+});
+
 export const getInternal = internalQuery({
   args: { plantingId: v.id("plantings") },
   handler: async (ctx, { plantingId }) => {
