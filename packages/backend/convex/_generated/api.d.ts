@@ -12,6 +12,7 @@ import type * as auth from "../auth.js";
 import type * as http from "../http.js";
 import type * as plantings from "../plantings.js";
 import type * as seed from "../seed.js";
+import type * as solana from "../solana.js";
 import type * as verification from "../verification.js";
 
 import type {
@@ -25,6 +26,7 @@ declare const fullApi: ApiFromModules<{
   http: typeof http;
   plantings: typeof plantings;
   seed: typeof seed;
+  solana: typeof solana;
   verification: typeof verification;
 }>;
 

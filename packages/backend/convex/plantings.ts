@@ -165,6 +165,16 @@ export const updateVerification = internalMutation({
   },
 });
 
+export const storeSolanaTx = internalMutation({
+  args: {
+    plantingId: v.id("plantings"),
+    signature: v.string(),
+  },
+  handler: async (ctx, { plantingId, signature }) => {
+    await ctx.db.patch(plantingId, { solanaTxSignature: signature });
+  },
+});
+
 export const findNearby = internalQuery({
   args: {
     latitude: v.float64(),

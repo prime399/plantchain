@@ -1,7 +1,7 @@
 import { api } from "@plantchain-new/backend/convex/_generated/api";
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "convex/react";
-import { CheckCircle2, Clock, Crown, MapPin, Medal, TreePine, Trophy, XCircle } from "lucide-react";
+import { ArrowUpRight, CheckCircle2, Clock, Crown, MapPin, Medal, TreePine, Trophy, XCircle } from "lucide-react";
 
 import { Sapling } from "@/components/svg/tree-illustrations";
 
@@ -177,6 +177,18 @@ function FeedRoute() {
                         <p className="text-xs text-leaf mt-2 line-clamp-1">
                           {p.verificationResult.tips}
                         </p>
+                      )}
+
+                      {p.solanaTxSignature && (
+                        <a
+                          href={`https://explorer.solana.com/tx/${p.solanaTxSignature}?cluster=devnet`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-1 text-xs text-amber-600 dark:text-amber-400 hover:underline mt-2"
+                        >
+                          <ArrowUpRight className="h-3 w-3" />
+                          View on Solana
+                        </a>
                       )}
                     </div>
                   </div>

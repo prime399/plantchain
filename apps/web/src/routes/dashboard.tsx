@@ -525,10 +525,15 @@ function DashboardContent() {
                         })}
                       </span>
                       {p.solanaTxSignature && (
-                        <span className="flex items-center gap-1 text-amber-600 dark:text-amber-400">
+                        <a
+                          href={`https://explorer.solana.com/tx/${p.solanaTxSignature}?cluster=devnet`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-1 text-amber-600 dark:text-amber-400 hover:underline"
+                        >
                           <ArrowUpRight className="h-3 w-3" />
                           On-chain
-                        </span>
+                        </a>
                       )}
                     </div>
                   </div>

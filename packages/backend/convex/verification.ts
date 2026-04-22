@@ -135,5 +135,11 @@ Respond in this exact JSON format:
       tips,
       agentId,
     });
+
+    if (passed) {
+      await ctx.scheduler.runAfter(0, internal.solana.recordOnChain, {
+        plantingId,
+      });
+    }
   },
 });

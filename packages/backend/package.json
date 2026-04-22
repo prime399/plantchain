@@ -11,6 +11,7 @@
   "dependencies": {
     "@ai-sdk/google": "^2.0.52",
     "@convex-dev/better-auth": "catalog:",
+    "@solana/web3.js": "^1.98.4",
     "ai": "^5.0.117",
     "better-auth": "catalog:",
     "convex": "catalog:",
