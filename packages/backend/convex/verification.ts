@@ -96,7 +96,7 @@ Respond in this exact JSON format:
 
     try {
       const result = await generateText({
-        model: google("gemini-2.5-flash"),
+        model: google("gemini-3-flash-preview"),
         messages: [
           {
             role: "user",
@@ -124,7 +124,8 @@ Respond in this exact JSON format:
           : parsed.reason;
         tips = parsed.tips;
       }
-    } catch {
+    } catch (err) {
+      console.error("Verification failed:", err);
       reason = "Verification service temporarily unavailable. Please resubmit.";
     }
 

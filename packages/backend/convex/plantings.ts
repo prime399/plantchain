@@ -136,6 +136,33 @@ export const leaderboard = query({
   },
 });
 
+export const chainStats = query({
+  args: {},
+  handler: async (ctx) => {
+    const verified = await ctx.db
+      .query("plantings")
+      .withIndex("by_status", (q) => q.eq("status", "verified"))
+      .take(1000);
+
+    const onChain = verified.filter((p) => p.solanaTxSignature);
+    const recentTxs = onChain
+      .sort((a, b) => b.createdAt - a.createdAt)
+      .slice(0, 5)
+      .map((p) => ({
+        signature: p.solanaTxSignature!,
+        species: p.species,
+        userName: p.userName ?? "Anonymous",
+        createdAt: p.createdAt,
+      }));
+
+    return {
+      onChainCount: onChain.length,
+      totalVerified: verified.length,
+      recentTxs,
+    };
+  },
+});
+
 export const getInternal = internalQuery({
   args: { plantingId: v.id("plantings") },
   handler: async (ctx, { plantingId }) => {

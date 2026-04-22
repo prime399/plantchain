@@ -4,8 +4,10 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "convex/react";
 import {
   ArrowRight,
+  ExternalLink,
   Leaf,
   MapPin,
+  ShieldCheck,
   TreePine,
   TrendingUp,
   Users,
@@ -73,12 +75,12 @@ const HOW_IT_WORKS = [
   {
     icon: IconVerify,
     title: "AI Verification",
-    desc: "Our AI confirms the species and planting quality.",
+    desc: "Our AI agent, powered by Auth0 identity, confirms the species and planting quality.",
   },
   {
     icon: IconRecord,
     title: "Permanent Record",
-    desc: "Your planting is recorded on the public registry.",
+    desc: "Your verified planting is recorded on the Solana blockchain — immutable and publicly auditable.",
   },
 ];
 
@@ -123,6 +125,7 @@ const FEATURED_SPECIES = [
 
 function HomeComponent() {
   const stats = useQuery(api.plantings.stats);
+  const chainStats = useQuery(api.plantings.chainStats);
   const recent = useQuery(api.plantings.list, { status: "verified" });
 
   return (
@@ -306,6 +309,154 @@ function HomeComponent() {
               ))}
             </div>
           )}
+        </div>
+      </section>
+
+      {/* On-Chain Proof */}
+      <section className="relative max-w-5xl mx-auto px-4 py-16 sm:py-20">
+        <div className="absolute inset-0 bg-dot-grid text-sprout/[0.07] pointer-events-none" />
+        <div className="relative text-center mb-12">
+          <div className="inline-flex items-center gap-2 font-mono text-[0.7rem] tracking-widest text-amber-600 dark:text-amber-400 uppercase border border-amber-500/30 px-4 py-1.5 rounded-full mb-4">
+            <ShieldCheck className="h-3.5 w-3.5" />
+            Blockchain Verified
+          </div>
+          <h2 className="font-serif text-3xl font-semibold mb-3">
+            On-Chain Proof
+          </h2>
+          <p className="text-muted-foreground max-w-lg mx-auto">
+            Every verified planting is permanently recorded on the Solana blockchain.
+            Transparent, immutable, and publicly auditable.
+          </p>
+        </div>
+
+        <div className="relative grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-6">
+          <div className="space-y-4">
+            <div className="corner-card relative border border-border/40 bg-card p-6">
+              <span className="corner-bl" />
+              <span className="corner-br" />
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2.5 rounded-lg bg-amber-500/10">
+                  <ShieldCheck className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+                </div>
+                <div>
+                  <div className="font-serif text-2xl font-semibold">
+                    {chainStats?.onChainCount ?? "—"}
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    Plantings recorded on Solana
+                  </div>
+                </div>
+              </div>
+              <div className="h-px bg-border/60 mb-4" />
+              <div className="grid grid-cols-2 gap-4 text-center">
+                <div>
+                  <div className="font-serif text-lg font-semibold">
+                    {chainStats?.totalVerified ?? "—"}
+                  </div>
+                  <div className="text-[0.65rem] text-muted-foreground uppercase tracking-wider">
+                    Total Verified
+                  </div>
+                </div>
+                <div>
+                  <div className="font-serif text-lg font-semibold text-amber-600 dark:text-amber-400">
+                    Devnet
+                  </div>
+                  <div className="text-[0.65rem] text-muted-foreground uppercase tracking-wider">
+                    Solana Network
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="corner-card relative border border-border/40 bg-card p-5">
+              <span className="corner-bl" />
+              <span className="corner-br" />
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider">
+                  How it works
+                </span>
+              </div>
+              <div className="space-y-2.5 text-sm text-muted-foreground">
+                <div className="flex items-start gap-2.5">
+                  <span className="font-mono text-[0.65rem] bg-forest dark:bg-secondary text-white dark:text-foreground w-5 h-5 rounded flex items-center justify-center shrink-0 mt-0.5">1</span>
+                  <span>AI verifies your planting photo and location</span>
+                </div>
+                <div className="flex items-start gap-2.5">
+                  <span className="font-mono text-[0.65rem] bg-forest dark:bg-secondary text-white dark:text-foreground w-5 h-5 rounded flex items-center justify-center shrink-0 mt-0.5">2</span>
+                  <span>Planting data is written to a Solana Memo transaction</span>
+                </div>
+                <div className="flex items-start gap-2.5">
+                  <span className="font-mono text-[0.65rem] bg-forest dark:bg-secondary text-white dark:text-foreground w-5 h-5 rounded flex items-center justify-center shrink-0 mt-0.5">3</span>
+                  <span>Transaction is signed and submitted to the network</span>
+                </div>
+                <div className="flex items-start gap-2.5">
+                  <span className="font-mono text-[0.65rem] bg-forest dark:bg-secondary text-white dark:text-foreground w-5 h-5 rounded flex items-center justify-center shrink-0 mt-0.5">4</span>
+                  <span>Anyone can verify the record on Solana Explorer</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="corner-card relative border border-border/40 bg-card p-6">
+            <span className="corner-bl" />
+            <span className="corner-br" />
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-serif font-semibold">Recent Transactions</h3>
+              <span className="text-[0.65rem] font-mono text-muted-foreground uppercase tracking-wider">
+                Solana Devnet
+              </span>
+            </div>
+
+            {chainStats === undefined ? (
+              <div className="space-y-3">
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <div key={i} className="h-14 rounded-lg bg-muted/20 animate-pulse" />
+                ))}
+              </div>
+            ) : chainStats.recentTxs.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
+                <ShieldCheck className="h-10 w-10 opacity-20 mb-3" />
+                <p className="text-sm">No on-chain transactions yet</p>
+                <p className="text-xs mt-1">Verified plantings will appear here</p>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {chainStats.recentTxs.map((tx) => (
+                  <a
+                    key={tx.signature}
+                    href={`https://explorer.solana.com/tx/${tx.signature}?cluster=devnet`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex items-center gap-3 p-3 rounded-lg border border-border/40 hover:border-amber-500/30 hover:bg-amber-500/5 transition-all"
+                  >
+                    <div className="p-1.5 rounded bg-emerald-500/10 shrink-0">
+                      <TreePine className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-medium truncate">
+                          {tx.species}
+                        </span>
+                        <span className="text-[0.6rem] text-muted-foreground">
+                          by {tx.userName}
+                        </span>
+                      </div>
+                      <div className="font-mono text-[0.65rem] text-muted-foreground truncate">
+                        {tx.signature.slice(0, 20)}...{tx.signature.slice(-8)}
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      <span className="text-[0.6rem] text-muted-foreground hidden sm:block">
+                        {new Date(tx.createdAt).toLocaleDateString()}
+                      </span>
+                      <ExternalLink className="h-3 w-3 text-muted-foreground group-hover:text-amber-500 transition-colors" />
+                    </div>
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </section>
 

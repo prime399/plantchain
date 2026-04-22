@@ -1,7 +1,7 @@
 import { api } from "@plantchain-new/backend/convex/_generated/api";
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "convex/react";
-import { ArrowUpRight, CheckCircle2, Clock, Crown, MapPin, Medal, TreePine, Trophy, XCircle } from "lucide-react";
+import { CheckCircle2, Clock, Crown, ExternalLink, MapPin, Medal, ShieldCheck, TreePine, Trophy, XCircle } from "lucide-react";
 
 import { Sapling } from "@/components/svg/tree-illustrations";
 
@@ -180,15 +180,25 @@ function FeedRoute() {
                       )}
 
                       {p.solanaTxSignature && (
-                        <a
-                          href={`https://explorer.solana.com/tx/${p.solanaTxSignature}?cluster=devnet`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-1 text-xs text-amber-600 dark:text-amber-400 hover:underline mt-2"
-                        >
-                          <ArrowUpRight className="h-3 w-3" />
-                          View on Solana
-                        </a>
+                        <div className="mt-3 pt-3 border-t border-border">
+                          <a
+                            href={`https://explorer.solana.com/tx/${p.solanaTxSignature}?cluster=devnet`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="group/proof flex items-center gap-2 p-2 rounded-lg bg-amber-500/5 border border-amber-500/20 hover:border-amber-500/40 hover:bg-amber-500/10 transition-all"
+                          >
+                            <ShieldCheck className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
+                            <div className="min-w-0 flex-1">
+                              <div className="text-[0.6rem] font-medium text-amber-700 dark:text-amber-300">
+                                On-Chain Proof
+                              </div>
+                              <div className="font-mono text-[0.6rem] text-muted-foreground truncate">
+                                {p.solanaTxSignature.slice(0, 16)}...{p.solanaTxSignature.slice(-8)}
+                              </div>
+                            </div>
+                            <ExternalLink className="h-3 w-3 text-muted-foreground group-hover/proof:text-amber-500 transition-colors shrink-0" />
+                          </a>
+                        </div>
                       )}
                     </div>
                   </div>
